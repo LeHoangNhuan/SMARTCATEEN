@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thực Đơn - SmartCanteen</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #74b9ff;
+            --secondary-color: #81ecec;
+            --accent-color: #a29bfe;
+            --success-color: #55efc4;
+            --dark-bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main Wrapper - White background for entire page */
+        .page-wrapper {
+            background: #ffffff;
+            min-height: 100vh;
+            position: relative;
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 800;
+            font-size: 1.5rem;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 900;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: .4px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 25%, #ffd700 50%, #66bb6a 75%, #42a5f5 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .logo-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+            background: rgba(116, 185, 255, 0.1);
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(116, 185, 255, 0.3);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(116, 185, 255, 0.4);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(116, 185, 255, 0.3);
+        }
+
+        .mobile-menu-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(116, 185, 255, 0.4);
+        }
+
+        /* Menu Hero */
+        .menu-hero {
+            text-align: center;
+            padding: 4rem 2rem 3rem;
+            background: linear-gradient(135deg, #a8e6cf 0%, #88d8c0 25%, #b8e6e6 50%, #a8e6cf 75%, #7dd3fc 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            border-radius: 0;
+            margin: 0;
+            box-shadow: 0 8px 24px rgba(0,0,0,.2);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+        
+        .menu-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(0,0,0,.65) 0%, rgba(0,0,0,.35) 60%, rgba(0,0,0,.2) 100%);
+        }
+
+        .menu-hero .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .menu-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 8px 26px rgba(0,0,0,.45);
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            color: rgba(255,255,255,.9);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Horizontal Menu Layout */
+        .menu-container {
+            padding: 2rem 0 4rem;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin: 2rem 1rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+
+        .menu-section {
+            margin-bottom: 3rem;
+            padding: 0 1.5rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #2d3436;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+
+        .menu-horizontal {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            padding: 1rem 0;
+            scroll-behavior: smooth;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+        }
+
+        .menu-horizontal::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .menu-horizontal::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+        }
+
+        .menu-horizontal::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 4px;
+        }
+
+        .menu-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            min-width: 280px;
+            max-width: 320px;
+            flex-shrink: 0;
+            flex: 0 0 auto;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(116, 185, 255, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .menu-card__image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card__image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(116, 185, 255, 0.1), rgba(129, 236, 236, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-card:hover .menu-card__image::before {
+            opacity: 1;
+        }
+
+        .menu-card__content {
+            padding: 1.5rem;
+            height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .menu-card__title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #2d3436;
+            line-height: 1.3;
+            flex: 1;
+        }
+
+        .menu-card__meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            font-weight: 600;
+        }
+
+        .menu-card__price {
+            color: #4CAF50;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .menu-card__calories {
+            color: #6c757d;
+            font-size: 0.9rem;
+            background: rgba(116, 185, 255, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+        }
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--card-bg);
+                padding: 1rem;
+                border-top: 1px solid var(--border-color);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .nav-links a {
+                padding: 0.8rem 1rem;
+                border-radius: 8px;
+                background: rgba(116, 185, 255, 0.1);
+                margin: 0.2rem 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .menu-hero h1 {
+                font-size: 2.5rem;
+                color: #2196F3;
+                text-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
+            }
+            
+            .menu-card {
+                min-width: 250px;
+            }
+            
+            .menu-horizontal {
+                gap: 1rem;
+                padding: 0.5rem 0;
+            }
+            
+            .menu-card {
+                min-width: 250px;
+                max-width: 280px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .menu-hero h1 {
+                font-size: 2rem;
+                color: #2196F3;
+                text-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
+            }
+            
+            .menu-card {
+                min-width: 200px;
+                max-width: 240px;
+            }
+            
+            .menu-card__content {
+                height: 120px;
+                padding: 1rem;
+            }
+            
+            .menu-card__title {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="/" class="logo">
+                    <div class="logo-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="40" height="40" rx="8" fill="url(#gradient)"/>
+                            <path d="M12 18C12 16.5 13.5 15 15 15H25C26.5 15 28 16.5 28 18V20C28 21.5 26.5 23 25 23H15C13.5 23 12 21.5 12 20V18Z" fill="white" opacity="0.9"/>
+                            <circle cx="16" cy="19" r="1.5" fill="#FFD700"/>
+                            <circle cx="20" cy="19" r="1.5" fill="#90EE90"/>
+                            <circle cx="24" cy="19" r="1.5" fill="#FFB6C1"/>
+                            <circle cx="18" cy="16" r="1" fill="white" opacity="0.8"/>
+                            <circle cx="22" cy="15" r="0.8" fill="white" opacity="0.6"/>
+                            <circle cx="26" cy="14" r="0.6" fill="white" opacity="0.4"/>
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#74b9ff;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#0984e3;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <span class="logo-text">SmartCanteen</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="gioithieu.html">Giới thiệu</a></li>
+                    <li><a href="nhan_dien.html">Nhận diện</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button onclick="toggleMobileMenu()" class="mobile-menu-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <button onclick="goBack()" class="back-btn">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Menu Hero -->
+    <section class="menu-hero">
+        <div class="container">
+            <h1>Thực Đơn Hôm Nay</h1>
+            <p>Khám phá tất cả món ăn ngon được AI nhận diện chính xác</p>
+        </div>
+    </section>
+
+    <!-- Menu Container -->
+    <section class="menu-container">
+        <div class="container">
+            <!-- Món Chính -->
+            <div class="menu-section">
+                <h2 class="section-title"> Món Chính</h2>
+                <div class="menu-horizontal">
+                    <div class="menu-card">
+                        <div class="menu-card__image" style="background-image: url('ca_hu.jpg');"></div>
+                        <div class="menu-card__content">
+                            <h3 class="menu-card__title">Cá hú kho</h3>
+                            <div class="menu-card__meta">
+                                <span class="menu-card__price">30.000₫</span>
+                                <span class="menu-card__calories">280kcal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card">
+                        <div class="menu-card__image" style="background-image: url('thit_kho_trung.jpg');"></div>
+                        <div class="menu-card__content">
+                            <h3 class="menu-card__title">Thịt Kho Trứng</h3>
+                            <div class="menu-card__meta">
+                                <span class="menu-card__price">30.000₫</span>
+                                <span class="menu-card__calories">350kcal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card">
+                        <div class="menu-card__image" style="background-image: url('suon_nuong.jpg');"></div>
+                        <div class="menu-card__content">
+                            <h3 class="menu-card__title">Sườn nướng</h3>
+                            <div class="menu-card__meta">
+                                <span class="menu-card__price">30.000₫</span>
+                                <span class="menu-card__calories">320kcal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card">
+                        <div class="menu-card__image" style="background-image: url('thit_kho.jpg');"></div>
+                        <div class="menu-card__content">
+                            <h3 class="menu-card__title">Thịt kho</h3>
+                            <div class="menu-card__meta">
+                                <span class="menu-card__price">25.000₫</span>
+                                <span class="menu-card__calories">280kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Canh & Soup -->
+            <div class="menu-section">
+                <h2 class="section-title"> Canh & Soup</h2>
+                <div class="menu-horizontal">
+                    <div class="menu-card">
+                        <div class="menu-card__image" style="background-image: url('canh_chua_ca.jpg');"></div>
+                        <div class="menu-card__content">
+                            <h3 class="menu-card__title">Canh chua có cá</h3>
+                            <div class="menu-card__meta">
+                                <span class="menu-card__price">25.000₫</span>
+                                <span class="menu-card__calories">150kcal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card">
+                        <div class="menu-card__image" style="background-image: url('canh_chua.jpg');"></div>
+                        <div class="menu-card__content">
+                            <h3 class="menu-card__title">Canh chua không cá</h3>
+                            <div class="menu-card__meta">
+                                <span class="menu-card__price">10.000₫</span>
+                                <span class="menu-card__calories">80kcal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card">
+                        <div class="menu-card__image" style="background-image: url('canh_cai.jpg');"></div>
+                        <div class="menu-card__content">
+                            <h3 class="menu-card__title">Canh rau cải</h3>
+                            <div class="menu-card__meta">
+                                <span class="menu-card__price">7.000₫</span>
+                                <span class="menu-card__calories">60kcal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card">
+                        <div class="menu-card__image" style="background-image: url('canh_rau_muong.jpg');"></div>
+                        <div class="menu-card__content">
+                            <h3 class="menu-card__title">Canh rau muống</h3>
+                            <div class="menu-card__meta">
+                                <span class="menu-card__price">7.000₫</span>
+                                <span class="menu-card__calories">50kcal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Rau & Đậu -->
+            <div class="menu-section">
+                <h2 class="section-title">Rau Xào</h2>
+                <div class="menu-horizontal">
+                    <div class="menu-card">
+                        <div class="menu-card__image" style="background-image: url('dau_que.jpg');"></div>
+                        <div class="menu-card__content">
+                            <h3 class="menu-card__title">ĐĐậu que xào</h3>
+                            <div class="menu-card__meta">
+                                <span class="menu-card__price">10.000₫</span>
+                                <span class="menu-card__calories">120kcal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card">
+                        <div class="menu-card__image" style="background-image: url('cu_san_xao.jpg');"></div>
+                        <div class="menu-card__content">
+                            <h3 class="menu-card__title">Củ sắn xào</h3>
+                            <div class="menu-card__meta">
+                                <span class="menu-card__price">10.000₫</span>
+                                <span class="menu-card__calories">180kcal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card">
+                        <div class="menu-card__image" style="background-image: url('dau_dua.jpg');"></div>
+                        <div class="menu-card__content">
+                            <h3 class="menu-card__title">Đậu đũa xào</h3>
+                            <div class="menu-card__meta">
+                                <span class="menu-card__price">10.000₫</span>
+                                <span class="menu-card__calories">150kcal</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="menu-card">
+                        <div class="menu-card__image" style="background-image: url('lagim.jpg');"></div>
+                        <div class="menu-card__content">
+                            <h3 class="menu-card__title">Lagim Xào</h3>
+                            <div class="menu-card__meta">
+                                <span class="menu-card__price">10.000₫</span>
+                                <span class="menu-card__calories">200kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Món Khác -->
+            <div class="menu-section">
+                <h2 class="section-title">Món Khác</h2>
+                <div class="menu-horizontal">
+                    <div class="menu-card">
+                        <div class="menu-card__image" style="background-image: url('dau_hu.jpg');"></div>
+                        <div class="menu-card__content">
+                            <h3 class="menu-card__title">Đậu hũ sốt cà</h3>
+                            <div class="menu-card__meta">
+                                <span class="menu-card__price">25.000₫</span>
+                                <span class="menu-card__calories">120kcal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card">
+                        <div class="menu-card__image" style="background-image: url('trung_chien.jpg');"></div>
+                        <div class="menu-card__content">
+                            <h3 class="menu-card__title">Trứng chiên</h3>
+                            <div class="menu-card__meta">
+                                <span class="menu-card__price">25.000₫</span>
+                                <span class="menu-card__calories">200kcal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-card">
+                        <div class="menu-card__image" style="background-image: url('cơm.jpg');"></div>
+                        <div class="menu-card__content">
+                            <h3 class="menu-card__title">Cơm trắng</h3>
+                            <div class="menu-card__meta">
+                                <span class="menu-card__price">10.000₫</span>
+                                <span class="menu-card__calories">200kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function goBack() {
+            // Kiểm tra xem có trang trước đó trong history không
+            if (window.history.length > 1) {
+                // Quay về trang trước đó
+                window.history.back();
+            } else {
+                // Nếu không có trang trước, quay về trang chính
+                window.location.href = 'nhan_dien.html';
+            }
+        }
+
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        // Đóng mobile menu khi click bên ngoài
+        document.addEventListener('click', function(e) {
+            const navLinks = document.querySelector('.nav-links');
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            
+            if (!navLinks.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Thêm keyboard shortcut cho nút back (Alt + Left Arrow)
+        document.addEventListener('keydown', function(e) {
+            if (e.altKey && e.key === 'ArrowLeft') {
+                goBack();
+            }
+        });
+
+        // Log để debug
+        console.log('Menu page loaded. History length:', window.history.length);
+    </script>
+</div>
+</body>
+</html>
+

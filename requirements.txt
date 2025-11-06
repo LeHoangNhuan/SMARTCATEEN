@@ -1,0 +1,35 @@
+# Ứng dụng Nhận dạng Thức ăn AI - Requirements
+
+# Web Framework
+Flask==2.3.3
+Flask-CORS==4.0.0
+
+# Machine Learning
+tensorflow==2.13.0
+numpy==1.24.3
+
+# Image Processing
+Pillow==10.0.0
+opencv-python==4.8.0.76
+
+# HTTP Requests (for testing)
+requests==2.31.0
+
+# JSON handling (built-in, but listed for clarity)
+# json - built-in module
+
+# Base64 encoding (built-in)
+# base64 - built-in module
+
+# File I/O (built-in)
+# os - built-in module
+# io - built-in module
+
+# Logging (built-in)
+# logging - built-in module
+
+# Date/Time (built-in)
+# datetime - built-in module
+
+# Garbage Collection (built-in)
+# gc - built-in module
